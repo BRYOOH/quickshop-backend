@@ -16,7 +16,6 @@ const Products= mongoose.model("Products",{
     },
     image:{
         type:String,
-        required:true,
     },
     new_price:{
         type:String,

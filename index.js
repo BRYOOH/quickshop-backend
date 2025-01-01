@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const dotenv = require("dotenv");
 const { UserSignin, userLogin } = require("./Controllers/UsersController");
-const { ProductControllers } = require("./Controllers/ProductController");
+const { ProductControllers, DeleteProduct, AllProducts } = require("./Controllers/ProductController");
 
     dotenv.config();
 
@@ -26,7 +26,9 @@ const { ProductControllers } = require("./Controllers/ProductController");
 
  app.post("/signup",UserSignin);
  app.post("/login",userLogin);
- app.post("/dashboard",ProductControllers);
+ app.post("/addproduct",ProductControllers);
+ app.delete("/deleteproduct",DeleteProduct);
+ app.get("/allProducts",AllProducts);
 
  app.listen(port,(error)=>{
     if(!error){

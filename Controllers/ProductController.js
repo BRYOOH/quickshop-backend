@@ -1,7 +1,7 @@
-const { Product } = require("../Models/Product").Products;
+const  Product = require("../Models/Product").Products;
 
 const ProductControllers = async(req,res) =>{
- const product = Users.find({});
+ let product = await Product.find({});
  let id;
 
  if(product.length> 0){
@@ -31,5 +31,19 @@ const ProductControllers = async(req,res) =>{
  })
 };
 
+const DeleteProduct = async (req,res) =>{
+   await Product.findOneAndDelete({id:req.body.id});
+   console.log("Product with id " + id + " has been deleted successifully");
+   res.json({
+      success:true,
+      name:req.body.name
+   })
+}
 
-module.exports={ProductControllers}
+const AllProducts = async(req,res)=>{
+  const allProducts= await Product.find({});
+  console.log("All products have been fetched");
+  res.send(allProducts)
+}
+
+module.exports={ProductControllers,DeleteProduct,AllProducts}

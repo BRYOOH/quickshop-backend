@@ -8,7 +8,8 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const dotenv = require("dotenv");
 const { UserSignin, userLogin } = require("./Controllers/UsersController");
-const { ProductControllers, DeleteProduct, AllProducts } = require("./Controllers/ProductController");
+const { ProductControllers, DeleteProduct, AllProducts, NewCollections, PopularInWomen } = require("./Controllers/ProductController");
+
 
     dotenv.config();
 
@@ -24,11 +25,29 @@ const { ProductControllers, DeleteProduct, AllProducts } = require("./Controller
     res.send("Express app is running!");
  })
 
+ const storage = multer.diskStorage({
+    destination:(req,file,cb) =>{
+        cb(null, "Images");
+    },
+    filename:(req,file,cb) =>{
+        console.log(file);
+        cb(null,Date.now()+path.extname(file.originalname));
+    }
+ }) 
+ const upload = multer({storage:storage});
+
+ app.use("Images",express.static("Images"));
+
+ app.post("/upload",upload.single("image"),(req,res)=>{
+    res.send("Image has been uploaded");
+ });
  app.post("/signup",UserSignin);
  app.post("/login",userLogin);
  app.post("/addproduct",ProductControllers);
- app.delete("/deleteproduct",DeleteProduct);
+ app.delete("/deleteproduct/:id",DeleteProduct);
  app.get("/allProducts",AllProducts);
+ app.get ("/newcollection",NewCollections);
+ app.get ("/popularinwomen",PopularInWomen);
 
  app.listen(port,(error)=>{
     if(!error){

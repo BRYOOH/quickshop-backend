@@ -7,7 +7,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const dotenv = require("dotenv");
-const { UserSignin, userLogin } = require("./Controllers/UsersController");
+const { UserSignin, userLogin, fetchUser, addToCart, removeFromCart, getCart } = require("./Controllers/UsersController");
 const { ProductControllers, DeleteProduct, AllProducts, NewCollections, PopularInWomen } = require("./Controllers/ProductController");
 
 
@@ -43,11 +43,16 @@ const { ProductControllers, DeleteProduct, AllProducts, NewCollections, PopularI
  });
  app.post("/signup",UserSignin);
  app.post("/login",userLogin);
+ app.post("/addtocart",addToCart);
+ app.post("/removefromcart",removeFromCart);
+ app.get("/getCart",getCart);
+
  app.post("/addproduct",ProductControllers);
  app.delete("/deleteproduct/:id",DeleteProduct);
  app.get("/allProducts",AllProducts);
- app.get ("/newcollection",NewCollections);
- app.get ("/popularinwomen",PopularInWomen);
+ app.get("/newcollection",NewCollections);
+ app.get("/popularinwomen",PopularInWomen);
+
 
  app.listen(port,(error)=>{
     if(!error){

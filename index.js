@@ -36,18 +36,18 @@ const { ProductControllers, DeleteProduct, AllProducts, NewCollections, PopularI
  }) 
  const upload = multer({storage:storage});
 
- app.use("Images",express.static("Images"));
-
+ app.use("/Images",express.static("Images"));
  app.post("/upload",upload.single("image"),(req,res)=>{
-    res.send("Image has been uploaded");
+    const imageUrl = `http://localhost:4000/Images/${req.file.filename}`;
+    res.json({ message: "Image uploaded successfully", image_url: imageUrl });
  });
  app.post("/signup",UserSignin);
  app.post("/login",userLogin);
- app.post("/addtocart",addToCart);
- app.post("/removefromcart",removeFromCart);
- app.get("/getCart",getCart);
+ app.post("/addtocart",fetchUser,addToCart);
+ app.post("/removefromcart",fetchUser,removeFromCart);
+ app.get("/getCart",fetchUser,getCart);
 
- app.post("/addproduct",ProductControllers);
+ app.post("/addproduct",ProductControllers); 
  app.delete("/deleteproduct/:id",DeleteProduct);
  app.get("/allProducts",AllProducts);
  app.get("/newcollection",NewCollections);

@@ -14,7 +14,19 @@ const UserSignin = async(req,res)=>{
         cart[i]=0;
     }
 
+    let userArray = await Users.find({});
+    let id;
+
+    if(userArray.length()>0){
+        let last_user = userArray.slice(-1);
+        let last_array = last_user[0];
+        id= last_array.id + 1;
+    }else{
+        id=0;
+    }
+
     const User = new Users({
+        id:id,
         username:req.body.username,
         email:req.body.email,
         password:req.body.password,
@@ -62,7 +74,10 @@ const userLogin = async (req,res)=>{
 
 const fetchUser = async (req,res,next)=>{
 
-    const token = req.header("auth-token");
+    const token = req.headers.authorization;
+    
+    console.log("token",token);
+    
     if(!token){
         res.status(401).json({errors:"You are not authenticated"});
     } else {

@@ -14,7 +14,10 @@ const { AccessToken, StkPush } = require("./Controllers/MpesaController");
     dotenv.config();
 
     app.use(express.json());
-    app.use(cors());
+    app.use(cors({
+        origin: ["https://quick-shop-seven.vercel.app"], // allow your frontend domain
+        credentials: true,
+      }));
 
     mongoose.connect(process.env.MONGOKEY).
     then(()=>console.log("MongoDB is running")).

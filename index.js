@@ -16,7 +16,9 @@ const { AccessToken, StkPush } = require("./Controllers/MpesaController");
     app.use(express.json());
     app.use(cors({
         origin: ["https://quick-shop-seven.vercel.app"], // allow your frontend domain
+        methods: ["GET", "POST", "DELETE", "PUT"],
         credentials: true,
+        exposedHeaders: ['Access-Control-Allow-Origin']
       }));
 
     mongoose.connect(process.env.MONGOKEY).
@@ -44,7 +46,7 @@ const { AccessToken, StkPush } = require("./Controllers/MpesaController");
 
  app.use("/Images",express.static("Images"));
  app.post("/upload",upload.single("image"),(req,res)=>{
-    const imageUrl = `http://localhost:${port}/Images/${req.file.filename}`;
+    const imageUrl = `https://quickshop-backend-2vgd.onrender.com/Images/${req.file.filename}`;
     res.json({ message: "Image uploaded successfully", image_url: imageUrl });
  });
  app.post("/signup",UserSignin);

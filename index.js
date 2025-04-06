@@ -4,12 +4,12 @@ const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
+const moment = require("moment");
 const multer = require("multer");
 const dotenv = require("dotenv");
 const { UserSignin, userLogin, fetchUser, addToCart, removeFromCart, getCart } = require("./Controllers/UsersController");
 const { ProductControllers, DeleteProduct, AllProducts, NewCollections, PopularInWomen } = require("./Controllers/ProductController");
-
+const { AccessToken, StkPush } = require("./Controllers/MpesaController");
 
     dotenv.config();
 
@@ -23,6 +23,9 @@ const { ProductControllers, DeleteProduct, AllProducts, NewCollections, PopularI
 
  app.get("/",(req,res)=>{
     res.send("Express app is running!");
+    var timestamp = moment().format("YYYYMMDDHHmm");
+    console.log("Timestamp",timestamp);
+    
  })
 
  const storage = multer.diskStorage({
@@ -52,6 +55,9 @@ const { ProductControllers, DeleteProduct, AllProducts, NewCollections, PopularI
  app.get("/allProducts",AllProducts);
  app.get("/newcollection",NewCollections);
  app.get("/popularinwomen",PopularInWomen);
+
+ app.get("/accesstoken",AccessToken);
+ app.post("/stkpush",StkPush);
 
 
  app.listen(port,(error)=>{

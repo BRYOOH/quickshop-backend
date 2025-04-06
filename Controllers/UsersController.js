@@ -14,19 +14,8 @@ const UserSignin = async(req,res)=>{
         cart[i]=0;
     }
 
-    let userArray = await Users.find({});
-    let id;
-
-    if(userArray.length()>0){
-        let last_user = userArray.slice(-1);
-        let last_array = last_user[0];
-        id= last_array.id + 1;
-    }else{
-        id=0;
-    }
 
     const User = new Users({
-        id:id,
         username:req.body.username,
         email:req.body.email,
         password:req.body.password,
@@ -37,7 +26,7 @@ const UserSignin = async(req,res)=>{
 
     const data = {
         User:{
-            id:User.id
+            id:User._id
         }
     }
 
@@ -83,7 +72,7 @@ const fetchUser = async (req,res,next)=>{
     } else {
         try {
             const data= jwt.verify(token,"secret_token");
-            req.user = data.user; 
+            req.user = data.User; 
             next();
         } catch (error) {
             res.status(401).send({errors:"Please authenticate using valid token"});
@@ -92,26 +81,30 @@ const fetchUser = async (req,res,next)=>{
 };
 
 const addToCart = async(req,res)=>{
-    console.log(req.body,req.user);
-    let userData = await Users.findOne({_id:req.body.id});
-    userData.cartData[req.body.itemId] = userData.cartData[req.body.itemId] + 1;
-    await Users.findByIdAndUpdate({_id:req.body},{cartData:userData.cartData});
-    res.send("product added",cartData);
+    console.log("body",req.body,"user",req.user);
+    const {itemId} = req.body;
+    const userId = req.user.id;
+    let userData = await Users.findById(userId);
+    userData.cartData[itemId] = userData.cartData[itemId] + 1;
+    await Users.findByIdAndUpdate(userId,{cartData:userData.cartData});
+    res.send({message:"product added",cartData:userData.cartData});
 };
 
 const removeFromCart = async(req,res)=>{
     console.log(req.body,req.user);
-    let userData = await Users.findOne({_id:req.body.id});
-    if(cartData[req.body.itemId]>0){
+    const userId = req.user.id;
+    const {itemId} = req.body;
+    let userData = await Users.findById(userId);
+    if(userData.cartData[itemId]>0){
         userData.cartData[req.body.itemId] = userData.cartData[req.body.itemId] - 1;
     }
-    await Users.findByIdAndUpdate({_id:req.body.id},{cartData:userData.cartData});
-    res.send("product has been removed");
+    await Users.findByIdAndUpdate(userId,{cartData:userData.cartData});
+    res.send({ message: "Product has been removed", cartData: userData.cartData });
 };
 
 const getCart = async(req,res)=>{
     console.log("cart fetched");
-    let userData = await Users.findOne({_id:req.body.id});
+    let userData = await Users.findById(req.user.id);
     res.json(userData.cartData);
     
 }

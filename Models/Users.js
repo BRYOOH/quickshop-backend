@@ -1,10 +1,7 @@
-const {mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 
 const Users = mongoose.model("Users",{
 
-    id:{
-        type:Number,
-    }, 
     username:{
         type:String,
     },
@@ -24,4 +21,4 @@ const Users = mongoose.model("Users",{
     }
 });
 
-module.exports={Users}
+module.exports={Users};

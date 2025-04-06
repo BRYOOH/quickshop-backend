@@ -1,4 +1,4 @@
-const port = 4000;
+const port = process.env.PORT || 4000;
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -16,7 +16,7 @@ const { AccessToken, StkPush } = require("./Controllers/MpesaController");
     app.use(express.json());
     app.use(cors());
 
-    mongoose.connect("mongodb+srv://brianmuchira001:Muriukis@cluster0.c8atalq.mongodb.net/QuickShop").
+    mongoose.connect(process.env.MONGOKEY).
     then(()=>console.log("MongoDB is running")).
     catch((err)=>console.log("MongoDB not running",err)
     )
@@ -41,7 +41,7 @@ const { AccessToken, StkPush } = require("./Controllers/MpesaController");
 
  app.use("/Images",express.static("Images"));
  app.post("/upload",upload.single("image"),(req,res)=>{
-    const imageUrl = `http://localhost:4000/Images/${req.file.filename}`;
+    const imageUrl = `http://localhost:${port}/Images/${req.file.filename}`;
     res.json({ message: "Image uploaded successfully", image_url: imageUrl });
  });
  app.post("/signup",UserSignin);

@@ -16,6 +16,9 @@ const { AccessToken, StkPush } = require("./Controllers/MpesaController");
     app.use(express.json());
     app.use(cors({
         origin: "https://quick-shop-zeta.vercel.app", // allow your frontend domain
+        methods: ["GET", "POST", "DELETE", "PUT"],
+        credentials: true,
+        exposedHeaders: ['Access-Control-Allow-Origin']
       }));
 
     mongoose.connect(process.env.MONGOKEY).

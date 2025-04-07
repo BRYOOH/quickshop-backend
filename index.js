@@ -18,6 +18,7 @@ const { AccessToken, StkPush } = require("./Controllers/MpesaController");
         origin: "https://quick-shop-zeta.vercel.app", // allow your frontend domain
         methods: ["GET", "POST", "DELETE", "PUT"],
         credentials: true,
+        allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
         exposedHeaders: ['Access-Control-Allow-Origin']
       }));
 

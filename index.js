@@ -19,17 +19,7 @@ const { AccessToken, StkPush } = require("./Controllers/MpesaController");
     app.use(cors({
         origin: ["https://quick-shop-zeta.vercel.app" ,
             "http://localhost:3000"], // allow your frontend domain
-        methods: ["GET", "POST", "DELETE", "PUT","OPTIONS"],
-        credentials: true,
-        allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-        exposedHeaders: ['Access-Control-Allow-Origin']
       }));
-
-    app.options('*', cors({
-        origin: "https://quick-shop-zeta.vercel.app",
-        credentials: true,
-        allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
-    }));
 
     mongoose.connect(process.env.MONGOKEY).
     then(()=>console.log("MongoDB is running")).

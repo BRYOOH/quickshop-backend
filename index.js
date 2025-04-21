@@ -38,16 +38,7 @@ const { AccessToken, StkPush } = require("./Controllers/MpesaController");
     api_key:process.env.API_KEY,
     api_secret: process.env.API_SECRET
  });
-
-//  const storage = multer.diskStorage({
-//     destination:(req,file,cb) =>{
-//         cb(null, "Images");
-//     },
-//     filename:(req,file,cb) =>{
-//         console.log(file);
-//         cb(null,Date.now()+path.extname(file.originalname));
-//     }
-//  }) 
+ 
 
     const storage = new CloudinaryStorage({
         cloudinary:cloudinary,
@@ -60,7 +51,6 @@ const { AccessToken, StkPush } = require("./Controllers/MpesaController");
 
  const upload = multer({storage:storage});
 
- app.use("/Images",express.static("Images"));
  app.post("/upload",upload.single("image"),(req,res)=>{
     // const imageUrl = `https://quickshop-backend-2vgd.onrender.com/Images/${req.file.filename}`;
     res.json({ message: "Image uploaded successfully", image_url: req.file.path});
